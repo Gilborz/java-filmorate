@@ -1,5 +1,6 @@
 package ru.yandex.practicum.filmorate.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import javax.validation.constraints.Email;
@@ -8,6 +9,7 @@ import javax.validation.constraints.Past;
 import java.time.LocalDate;
 
 @Data
+@AllArgsConstructor
 @EqualsAndHashCode (exclude = {"id"})
 public class User {
     private Integer id;
