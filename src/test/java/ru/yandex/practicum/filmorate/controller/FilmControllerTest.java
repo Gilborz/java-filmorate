@@ -44,6 +44,7 @@ class FilmControllerTest {
 
         assertThrows(Throwable.class, () -> filmController.updateFilm(film1));
     }
+
     @Test
     void addFilmIfHisNameEmpty() {
         LocalDate localDate = LocalDate.of(1900, 10, 23);
