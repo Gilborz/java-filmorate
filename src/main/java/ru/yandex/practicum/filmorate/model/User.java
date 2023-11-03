@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Past;
 import java.time.LocalDate;
 
@@ -17,8 +18,8 @@ public class User {
     private String login;
     private String name;
     @Email
+    @NotNull
     private String email;
     @Past
     private LocalDate birthday;
-
 }
