@@ -31,30 +31,27 @@ public class UserController {
 
         user.setId(id++);
         users.put(user.getId(), user);
-        log.info("Пользователь {} создан", user);
+        log.info("Пользователь c id равным {} создан", user.getId());
         return user;
     }
 
     @PutMapping (value = "/users")
     public User updateUser(@Valid @RequestBody User user) throws ValidationException {
-        for (Integer i : users.keySet()) {
-            if (i == user.getId()) {
-                users.replace(i, user);
-                log.info("Информация о пользователе {} обновлена", user);
-                return user;
-            }
+        if (!users.containsKey(user.getId())) {
+            log.error("Пользователя с id равным " + user.getId() + " не найдено");
+            throw new ValidationException("Неверный id " + user.getId() + " пользователя");
         }
 
-        String msg = "Пользователя с таким id " + user.getId() + " не найдено";
-        log.error(msg);
-        throw new ValidationException(msg);
+        users.replace(user.getId(), user);
+        log.info("Информация о пользователе c id равным " + user.getId() + " обновлена");
+        return user;
     }
 
     public static void validation(User user) throws ValidationException {
         String[] forEquals = user.getLogin().split(" ");
 
         if (forEquals.length > 1) {
-            log.error("Логин в {} содержит пробелы", user);
+            log.error("Логин пользователя с id {} содержит пробелы", user.getId());
             throw new ValidationException("Логин не должен содержать пробелы");
         }
     }

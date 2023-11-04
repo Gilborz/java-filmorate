@@ -15,7 +15,7 @@ import java.util.Map;
 public class FilmController {
 
     private int id = 1;
-    private Map<Integer, Film> films = new HashMap<>();
+    private static Map<Integer, Film> films = new HashMap<>();
 
     @GetMapping (value = "/films")
     public ArrayList<Film> getFilms() {
@@ -27,30 +27,27 @@ public class FilmController {
         validation(film);
         film.setId(id++);
         films.put(film.getId(), film);
-        log.info("Фильм {} добавлен", film);
+        log.info("Фильм c id равным " + film.getId() + " добавлен");
         return film;
     }
 
     @PutMapping (value = "/films")
     public Film updateFilm(@Valid @RequestBody Film film) throws ValidationException {
-        for (Integer i : films.keySet()) {
-            if (i == film.getId()) {
-                films.replace(i, film);
-                log.info("Фильм {} обновлён", film);
-                return film;
-            }
+        if (!films.containsKey(film.getId())) {
+            log.error("Фильм c id равным " + film.getId() + " не найден");
+            throw new ValidationException("Неверный id " + film.getId() + " фильма");
         }
 
-        String msg = "Фильм с таким " + film.getId() + " не найден";
-        log.error(msg);
-        throw new ValidationException(msg);
+        films.replace(film.getId(), film);
+        log.info("Фильм c id равным " + film.getId() + " обновлён");
+        return film;
     }
 
     private static void validation(Film film) throws ValidationException {
         LocalDate birthDayFilm = LocalDate.of(1895,12,28);
 
         if (film.getReleaseDate().isBefore(birthDayFilm)) {
-            log.error("Дата релиза фильма {} раньше 28 декабря 1895 года", film);
+            log.error("Дата релиза фильма c указанным id {} раньше 28 декабря 1895 года", film.getId());
             throw new ValidationException("Дата релиза не может быть раньше 28 декабря 1895 года");
         }
     }
