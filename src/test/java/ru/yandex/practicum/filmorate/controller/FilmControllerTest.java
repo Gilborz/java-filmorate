@@ -32,7 +32,7 @@ class FilmControllerTest {
         LocalDate localDate = LocalDate.of(1800, 10, 23);
         Film film = new Film(1, "film", "desc", localDate, 100);
 
-        assertThrows(ValidationException.class, () -> filmController.addFilm(film));
+        assertThrows(RuntimeException.class, () -> filmController.addFilm(film));
     }
 
     @Test

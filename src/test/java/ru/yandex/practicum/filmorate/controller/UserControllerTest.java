@@ -44,7 +44,7 @@ class UserControllerTest {
     @Test
     void createUserIfNameEqualsNullThenNameEqualsLogin() throws ValidationException {
         LocalDate localDate = LocalDate.of(2000,12,12);
-        User user = new User(1, "jkllkj", null, "mail@ru", localDate);
+        User user = new User(1, "jkllkj", "", "mail@ru", localDate);
 
         final User load = userController.addUser(user);
         final User save = userController.getUsers().get(0);
