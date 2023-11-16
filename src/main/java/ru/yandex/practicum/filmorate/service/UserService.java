@@ -34,7 +34,7 @@ public class UserService {
         return userStorage.getUsers();
     }
 
-    public User getUserById (Integer id) {
+    public User getUserById(Integer id) {
         return userStorage.getUserById(id);
     }
 
@@ -59,7 +59,7 @@ public class UserService {
         User user = userStorage.getUsers().get(userId);
 
         List<User> friends = new ArrayList<>();
-        for(Integer i : user.getFriends()) {
+        for (Integer i : user.getFriends()) {
             friends.add(userStorage.getUsers().get(i));
         }
 
@@ -74,7 +74,7 @@ public class UserService {
 
         temporarily.retainAll(secondUser);
         List<User> commonFriends = new ArrayList<>();
-        for(Integer i : temporarily) {
+        for (Integer i : temporarily) {
             commonFriends.add(userStorage.getUsers().get(i));
         }
 
