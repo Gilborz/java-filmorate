@@ -26,7 +26,7 @@ public class UserController {
     }
 
     @GetMapping ("/users/{id}")
-    public User getUserId(@PathVariable(required = false) Integer id) throws ValidationException {
+    public User getUserId(@PathVariable (required = false) Integer id) throws ValidationException {
         validationEmpty(id);
         validationUserId(id);
 
@@ -60,9 +60,7 @@ public class UserController {
     }
 
     @DeleteMapping ("/users/{id}/friends/{friendId}")
-    public void removeFriend(
-            @PathVariable(required = false) Integer id,
-            @PathVariable(required = false) Integer friendId) throws ValidationException {
+    public void removeFriend(@PathVariable(required = false) Integer id, @PathVariable(required = false) Integer friendId) throws ValidationException {
         validationEmpty(id);
         validationEmpty(friendId);
         validationUserId(friendId);
@@ -79,9 +77,7 @@ public class UserController {
     }
 
     @GetMapping ("/users/{id}/friends/common/{otherId}")
-    public List<User> getCommonFriends(
-            @PathVariable(required = false) Integer id,
-            @PathVariable(required = false) Integer otherId) throws ValidationException {
+    public List<User> getCommonFriends(@PathVariable(required = false) Integer id, @PathVariable(required = false) Integer otherId) throws ValidationException {
         validationEmpty(id);
         validationEmpty(otherId);
         validationUserId(id);
