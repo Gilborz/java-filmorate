@@ -70,11 +70,11 @@ public class UserService {
     public List<User> commonFriends(Integer userId, Integer friendsId) {
         Set<Integer> firstUser = userStorage.getUsers().get(userId).getFriends();
         Set<Integer> secondUser = userStorage.getUsers().get(friendsId).getFriends();
+        Set<Integer> temporarily = new HashSet<>(firstUser);
 
-        firstUser.retainAll(secondUser);
-
+        temporarily.retainAll(secondUser);
         List<User> commonFriends = new ArrayList<>();
-        for(Integer i : firstUser) {
+        for(Integer i : temporarily) {
             commonFriends.add(userStorage.getUsers().get(i));
         }
 
