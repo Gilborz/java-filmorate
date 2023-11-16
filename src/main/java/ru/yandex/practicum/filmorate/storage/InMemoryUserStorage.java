@@ -15,7 +15,7 @@ public class InMemoryUserStorage implements UserStorage {
     private int id;
     private Map<Integer, User> users;
 
-    public InMemoryUserStorage () {
+    public InMemoryUserStorage() {
         this.id = 1;
         this.users = new HashMap<>();
     }

@@ -17,7 +17,7 @@ public class FilmService {
     private final UserStorage userStorage;
 
     @Autowired
-    public FilmService (FilmStorage filmStorage, UserStorage userStorage) {
+    public FilmService(FilmStorage filmStorage, UserStorage userStorage) {
         this.filmStorage = filmStorage;
         this.userStorage = userStorage;
     }
@@ -71,13 +71,5 @@ public class FilmService {
 
     public Map<Integer, User> getAllUser() {
         return userStorage.getUsers();
-    }
-}
-
-class FilmComparator implements Comparator<Film> {
-
-    @Override
-    public int compare(Film film1, Film film2) {
-        return film1.getLikes().size() - film2.getLikes().size();
     }
 }

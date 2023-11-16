@@ -22,7 +22,7 @@ public class Film {
     private Integer duration;
     private Set<Integer> likes;
 
-    public Film (Integer id, String name, String description, LocalDate releaseDate, Integer duration) {
+    public Film(Integer id, String name, String description, LocalDate releaseDate, Integer duration) {
         this.id = id;
         this.name = name;
         this.description = description;

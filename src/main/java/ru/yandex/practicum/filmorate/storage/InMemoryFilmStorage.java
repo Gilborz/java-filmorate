@@ -15,7 +15,7 @@ public class InMemoryFilmStorage implements FilmStorage {
     private int id;
     private Map<Integer, Film> films;
 
-    public InMemoryFilmStorage () {
+    public InMemoryFilmStorage() {
         this.films = new HashMap<>();
         this.id = 1;
     }
