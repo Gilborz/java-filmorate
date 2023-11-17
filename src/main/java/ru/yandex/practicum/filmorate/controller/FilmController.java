@@ -1,7 +1,6 @@
 package ru.yandex.practicum.filmorate.controller;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
@@ -16,7 +15,6 @@ public class FilmController {
 
     private final FilmService filmService;
 
-    @Autowired
     public FilmController(FilmService filmService) {
         this.filmService = filmService;
     }
@@ -28,23 +26,20 @@ public class FilmController {
 
     @GetMapping ("/films/{id}")
     public Film getFilmById(@PathVariable Integer id) throws ValidationException {
-        validationEmpty(id);
-        validationFilm(id);
+        validateEmpty(id);
 
         return filmService.getFilmById(id);
     }
 
     @PostMapping ("/films")
     public Film addFilm(@Valid @RequestBody Film film) {
-        validationDate(film);
+        validateDate(film);
 
         return filmService.addFilm(film);
     }
 
     @PutMapping ("/films")
     public Film updateFilm(@Valid @RequestBody Film film) throws ValidationException {
-        validationFilmId(film);
-
         return filmService.updateFilm(film);
     }
 
@@ -52,10 +47,8 @@ public class FilmController {
     public void putLike(
             @PathVariable(required = false) Integer id,
             @PathVariable(required = false) Integer userId) throws ValidationException {
-        validationEmpty(id);
-        validationEmpty(userId);
-        validationFilm(id);
-        validationUser(userId);
+        validateEmpty(id);
+        validateEmpty(userId);
 
         filmService.putLikes(id, userId);
     }
@@ -64,10 +57,8 @@ public class FilmController {
     public void removeLike(
             @PathVariable(required = false) Integer id,
             @PathVariable(required = false) Integer userId) throws ValidationException {
-        validationEmpty(id);
-        validationEmpty(userId);
-        validationFilm(id);
-        validationUser(userId);
+        validateEmpty(id);
+        validateEmpty(userId);
 
         filmService.removeLike(id, userId);
     }
@@ -77,7 +68,7 @@ public class FilmController {
         return filmService.getMorePopularFilm(count);
     }
 
-    private void validationDate(Film film) {
+    private void validateDate(Film film) {
         LocalDate birthDayFilm = LocalDate.of(1895,12,28);
 
         if (film.getReleaseDate().isBefore(birthDayFilm)) {
@@ -86,34 +77,11 @@ public class FilmController {
         }
     }
 
-    private void validationFilmId(Film film) throws ValidationException {
-        if (!filmService.getAllFilms().containsKey(film.getId())) {
-            log.error("Фильм c id равным " + film.getId() + " не найден");
-            throw new ValidationException("Неверный id " + film.getId() + " фильма");
-        }
-    }
-
-    public void validationEmpty(Integer id) {
+    public void validateEmpty(Integer id) {
         if (id == null) {
             String msg = "Передан пустой id фильма";
             log.error(msg);
             throw new NullPointerException(msg);
-        }
-    }
-
-    private void validationFilm(Integer filmId) throws ValidationException {
-        if (!filmService.getAllFilms().containsKey(filmId)) {
-            String msg = "Фильма с таким id " + filmId + " не найдено";
-            log.error(msg);
-            throw new ValidationException(msg);
-        }
-    }
-
-    private void validationUser(Integer userId) throws ValidationException {
-        if (!filmService.getAllUser().containsKey(userId)) {
-            String msg = "Пользователя с id равным " + userId + " не найдено";
-            log.error(msg);
-            throw new ValidationException(msg);
         }
     }
 }

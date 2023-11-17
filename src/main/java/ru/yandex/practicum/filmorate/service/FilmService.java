@@ -3,6 +3,7 @@ package ru.yandex.practicum.filmorate.service;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.storage.FilmStorage;
@@ -30,19 +31,29 @@ public class FilmService {
         return filmStorage.addFilm(film);
     }
 
-    public Film updateFilm(Film film) {
+    public Film updateFilm(Film film) throws ValidationException {
+        validateFilm(film);
+
         return filmStorage.updateFilm(film);
     }
 
-    public Film getFilmById(Integer id) {
-        return filmStorage.getFilmById(id);
+    public Film getFilmById(Integer filmId) throws ValidationException {
+        validateFilmId(filmId);
+
+        return filmStorage.getFilmById(filmId);
     }
 
-    public void putLikes(Integer filmId, Integer userId) {
+    public void putLikes(Integer filmId, Integer userId) throws ValidationException {
+        validateFilmId(filmId);
+        validateUserId(userId);
+
         getAllFilms().get(filmId).setLike(userId);
     }
 
-    public void removeLike(Integer filmId, Integer userId) {
+    public void removeLike(Integer filmId, Integer userId) throws ValidationException {
+        validateFilmId(filmId);
+        validateUserId(userId);
+
         getAllFilms().get(filmId).removeLike(userId);
     }
 
@@ -71,5 +82,28 @@ public class FilmService {
 
     public Map<Integer, User> getAllUser() {
         return userStorage.getUsers();
+    }
+
+    private void validateFilm(Film film) throws ValidationException {
+        if (!getAllFilms().containsKey(film.getId())) {
+            log.error("Фильм c id равным " + film.getId() + " не найден");
+            throw new ValidationException("Неверный id " + film.getId() + " фильма");
+        }
+    }
+
+    private void validateFilmId(Integer filmId) throws ValidationException {
+        if (!getAllFilms().containsKey(filmId)) {
+            String msg = "Фильма с таким id " + filmId + " не найдено";
+            log.error(msg);
+            throw new ValidationException(msg);
+        }
+    }
+
+    private void validateUserId(Integer userId) throws ValidationException {
+        if (!getAllUser().containsKey(userId)) {
+            String msg = "Пользователя с id равным " + userId + " не найдено";
+            log.error(msg);
+            throw new ValidationException(msg);
+        }
     }
 }

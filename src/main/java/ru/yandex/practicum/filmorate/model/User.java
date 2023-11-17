@@ -16,13 +16,13 @@ import java.util.Set;
 @EqualsAndHashCode (exclude = {"id"})
 public class User {
     private Integer id;
-    @NotBlank
+    @NotBlank(message = "Поле не должно быть пустым")
     private String login;
     private String name;
-    @Email
-    @NotNull
+    @Email(message = "Некорректный email")
+    @NotNull(message = "Поле не должно быть пустым")
     private String email;
-    @Past
+    @Past(message = "День рождения не корректный")
     private LocalDate birthday;
     private Set<Integer> friends;
 

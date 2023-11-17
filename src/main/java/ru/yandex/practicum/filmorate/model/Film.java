@@ -12,13 +12,13 @@ import java.util.Set;
 @EqualsAndHashCode(exclude = {"id"})
 public class Film {
     private Integer id;
-    @NotBlank
-    @NotNull
+    @NotBlank(message = "Поле имени не должно быть пустым")
+    @NotNull(message = "Поле имени не должно быть пустым")
     private String name;
-    @Size(max = 200)
+    @Size(max = 200, message = "Описание фильма не должно превышать 200 символов")
     private String description;
     private LocalDate releaseDate;
-    @Positive
+    @Positive(message = "Продолжительность фильма должна быть больше нуля")
     private Integer duration;
     private Set<Integer> likes;
 

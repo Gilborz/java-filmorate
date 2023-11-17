@@ -15,7 +15,6 @@ public class UserController {
 
     private final UserService userService;
 
-    @Autowired
     public UserController(UserService userService) {
         this.userService = userService;
     }
@@ -27,23 +26,20 @@ public class UserController {
 
     @GetMapping ("/users/{id}")
     public User getUserId(@PathVariable(required = false) Integer id) throws ValidationException {
-        validationEmpty(id);
-        validationUserId(id);
+        validateEmpty(id);
 
         return userService.getUserById(id);
     }
 
     @PostMapping ("/users")
     public User addUser(@Valid @RequestBody User user) throws ValidationException {
-        validationDate(user);
+        validateDate(user);
 
         return userService.addUser(user);
     }
 
     @PutMapping ("/users")
     public User updateUser(@Valid @RequestBody User user) throws ValidationException {
-        validationUser(user);
-
         return userService.updateUser(user);
     }
 
@@ -51,29 +47,25 @@ public class UserController {
     public void addFriend(
             @PathVariable(required = false) Integer id,
             @PathVariable(required = false) Integer friendId) throws ValidationException {
-        validationEmpty(id);
-        validationUserId(id);
-        validationEmpty(friendId);
-        validationUserId(friendId);
+        validateEmpty(id);
+        validateEmpty(friendId);
 
-        userService.addFriends(id, friendId);
+        userService.addFriend(id, friendId);
     }
 
     @DeleteMapping ("/users/{id}/friends/{friendId}")
     public void removeFriend(
             @PathVariable(required = false) Integer id,
             @PathVariable(required = false) Integer friendId) throws ValidationException {
-        validationEmpty(id);
-        validationEmpty(friendId);
-        validationUserId(friendId);
+        validateEmpty(id);
+        validateEmpty(friendId);
 
         userService.removeFriend(id, friendId);
     }
 
     @GetMapping ("/users/{id}/friends")
     public List<User> getAllFriends(@PathVariable(required = false) Integer id) throws ValidationException {
-        validationEmpty(id);
-        validationUserId(id);
+        validateEmpty(id);
 
         return userService.getFriendsUser(id);
     }
@@ -82,15 +74,13 @@ public class UserController {
     public List<User> getCommonFriends(
             @PathVariable(required = false) Integer id,
             @PathVariable(required = false) Integer otherId) throws ValidationException {
-        validationEmpty(id);
-        validationEmpty(otherId);
-        validationUserId(id);
-        validationUserId(otherId);
+        validateEmpty(id);
+        validateEmpty(otherId);
 
         return userService.commonFriends(id, otherId);
     }
 
-    private void validationEmpty(Integer id) {
+    private void validateEmpty(Integer id) {
         if (id == null) {
             String msg = "Передан пустой id пользователя";
             log.error(msg);
@@ -98,26 +88,12 @@ public class UserController {
         }
     }
 
-    private void validationDate(User user) throws ValidationException {
+    private void validateDate(User user) throws ValidationException {
         String[] forEquals = user.getLogin().split(" ");
 
         if (forEquals.length > 1) {
             log.error("Логин пользователя с id {} содержит пробелы", user.getId());
             throw new ValidationException("Логин не должен содержать пробелы");
-        }
-    }
-
-    private void validationUser(User user) throws ValidationException {
-        if (!userService.getUsers().containsKey(user.getId())) {
-            log.error("Пользователя с id равным " + user.getId() + " не найдено");
-            throw new ValidationException("Неверный id " + user.getId() + " пользователя");
-        }
-    }
-
-    private void validationUserId(Integer userId) throws ValidationException {
-        if (!userService.getUsers().containsKey(userId)) {
-            log.error("Пользователя с id равным " + userId + " не найдено");
-            throw new ValidationException("Неверный id " + userId + " пользователя");
         }
     }
 }
