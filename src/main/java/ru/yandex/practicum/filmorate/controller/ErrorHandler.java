@@ -14,7 +14,7 @@ public class ErrorHandler {
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ErrorResponse handleValidate(final ValidationException e) {
+    public ErrorResponse handleValidation(final ValidationException e) {
         return new ErrorResponse(e.getMessage());
     }
 
