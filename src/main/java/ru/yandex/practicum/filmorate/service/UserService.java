@@ -2,6 +2,7 @@ package ru.yandex.practicum.filmorate.service;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
@@ -15,7 +16,7 @@ public class UserService {
     private final UserStorage userStorage;
 
     @Autowired
-    public UserService(UserStorage userStorage) {
+    public UserService(@Qualifier("inMemoryUserStorage") UserStorage userStorage) {
         this.userStorage = userStorage;
     }
 
@@ -79,8 +80,8 @@ public class UserService {
         validateUserId(userId);
         validateUserId(friendId);
 
-        Set<Integer> firstUser = userStorage.getUsers().get(userId).getFriends();
-        Set<Integer> secondUser = userStorage.getUsers().get(friendId).getFriends();
+        List<Integer> firstUser = userStorage.getUsers().get(userId).getFriends();
+        List<Integer> secondUser = userStorage.getUsers().get(friendId).getFriends();
         Set<Integer> temporarily = new HashSet<>(firstUser);
 
         temporarily.retainAll(secondUser);

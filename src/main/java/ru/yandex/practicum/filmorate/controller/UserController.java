@@ -1,45 +1,48 @@
 package ru.yandex.practicum.filmorate.controller;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
-import ru.yandex.practicum.filmorate.service.UserService;
+import ru.yandex.practicum.filmorate.storage.UserDbStorage;
+
 import java.util.List;
 
 @Slf4j
 @RestController
 public class UserController {
 
-    private final UserService userService;
+    private final UserDbStorage userDbStorage;
 
-    public UserController(UserService userService) {
-        this.userService = userService;
+    @Autowired
+    public UserController(UserDbStorage userDbStorage) {
+        this.userDbStorage = userDbStorage;
     }
 
     @GetMapping ("/users")
     public List<User> getUsers() {
-        return userService.getAllUsers();
+        return userDbStorage.getAllUsers();
     }
 
     @GetMapping ("/users/{id}")
     public User getUserId(@PathVariable(required = false) Integer id) throws ValidationException {
         validateEmpty(id);
 
-        return userService.getUserById(id);
+        return userDbStorage.getUserById(id);
     }
 
     @PostMapping ("/users")
     public User addUser(@Valid @RequestBody User user) throws ValidationException {
         validateDate(user);
 
-        return userService.addUser(user);
+        return userDbStorage.addUser(user);
     }
 
     @PutMapping ("/users")
     public User updateUser(@Valid @RequestBody User user) throws ValidationException {
-        return userService.updateUser(user);
+        return userDbStorage.updateUser(user);
     }
 
     @PutMapping ("/users/{id}/friends/{friendId}")
@@ -49,7 +52,7 @@ public class UserController {
         validateEmpty(id);
         validateEmpty(friendId);
 
-        userService.addFriend(id, friendId);
+        userDbStorage.addFriend(id, friendId);
     }
 
     @DeleteMapping ("/users/{id}/friends/{friendId}")
@@ -59,14 +62,14 @@ public class UserController {
         validateEmpty(id);
         validateEmpty(friendId);
 
-        userService.removeFriend(id, friendId);
+        userDbStorage.removeFriend(id, friendId);
     }
 
     @GetMapping ("/users/{id}/friends")
     public List<User> getAllFriends(@PathVariable(required = false) Integer id) throws ValidationException {
         validateEmpty(id);
 
-        return userService.getFriendsUser(id);
+        return userDbStorage.getAllFriends(id);
     }
 
     @GetMapping ("/users/{id}/friends/common/{otherId}")
@@ -76,7 +79,7 @@ public class UserController {
         validateEmpty(id);
         validateEmpty(otherId);
 
-        return userService.commonFriends(id, otherId);
+        return userDbStorage.getCommonFriends(id, otherId);
     }
 
     private void validateEmpty(Integer id) {

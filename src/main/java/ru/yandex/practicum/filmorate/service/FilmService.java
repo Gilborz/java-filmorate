@@ -2,6 +2,7 @@ package ru.yandex.practicum.filmorate.service;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
@@ -15,10 +16,12 @@ import java.util.*;
 public class FilmService {
 
     private final FilmStorage filmStorage;
+
     private final UserStorage userStorage;
 
     @Autowired
-    public FilmService(FilmStorage filmStorage, UserStorage userStorage) {
+    public FilmService(@Qualifier("inMemoryFilmStorage") FilmStorage filmStorage,
+                       @Qualifier("inMemoryUserStorage") UserStorage userStorage) {
         this.filmStorage = filmStorage;
         this.userStorage = userStorage;
     }
@@ -47,14 +50,14 @@ public class FilmService {
         validateFilmId(filmId);
         validateUserId(userId);
 
-        getAllFilms().get(filmId).setLike(userId);
+        getAllFilms().get(filmId);
     }
 
     public void removeLike(Integer filmId, Integer userId) throws ValidationException {
         validateFilmId(filmId);
         validateUserId(userId);
 
-        getAllFilms().get(filmId).removeLike(userId);
+        getAllFilms().get(filmId);
     }
 
     public List<Film> getMorePopularFilm(Integer count) {
@@ -65,7 +68,6 @@ public class FilmService {
         int num = count;
 
         List<Film> films = getFilms();
-        films.sort(new FilmComparator().reversed());
 
         if (num > films.size()) {
             log.info("Список из {} фильмов отправлен", films.size());

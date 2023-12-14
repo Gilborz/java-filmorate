@@ -8,8 +8,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Past;
 import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 @Slf4j
 @Data
@@ -24,7 +23,7 @@ public class User {
     private String email;
     @Past(message = "День рождения не корректный")
     private LocalDate birthday;
-    private Set<Integer> friends;
+    private List<Integer> friends;
 
     public User(Integer id, String login, String name, String email, LocalDate birthday) {
         this.id = id;
@@ -32,7 +31,7 @@ public class User {
         this.name = name;
         this.email = email;
         this.birthday = birthday;
-        this.friends = new HashSet<>();
+        this.friends = new ArrayList<>();
     }
 
     public void setFriend(Integer friend) {
