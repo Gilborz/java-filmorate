@@ -33,7 +33,7 @@ public class MpaDaoImpl implements MpaDao {
     public Motion getMpaById(Integer id) throws SQlDataException {
         String query = "SELECT * FROM mpa WHERE id = ?";
 
-        try{
+        try {
             log.info("Рейтинг по id {} отправлен", id);
             return jdbcTemplate.queryForObject(query, motionRowMapper(), id);
         } catch (DataAccessException e) {
