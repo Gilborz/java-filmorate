@@ -51,7 +51,7 @@ public class GenreDaoImplTest {
                 .isEqualTo(new Genre(1, "Комедия"));
 
         Assertions.assertThatExceptionOfType(ValidationException.class)
-                .isThrownBy(() -> {genreDao.getGenreById(7);
+                .isThrownBy(() -> { genreDao.getGenreById(7);
                 }).withMessage("Жанра с таким id " + 7 + " нет");
     }
 }
