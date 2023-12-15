@@ -15,7 +15,6 @@ import ru.yandex.practicum.filmorate.model.Motion;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Slf4j
 @Component
