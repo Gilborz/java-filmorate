@@ -49,7 +49,8 @@ public class MotionDaoImplTest {
                 .usingRecursiveComparison().isEqualTo(new Motion(1, "G"));
 
         Assertions.assertThatExceptionOfType(SQlDataException.class)
-                .isThrownBy(() -> {mpaDao.getMpaById(8);
+                .isThrownBy(() -> {
+                    mpaDao.getMpaById(8);
                 }).withMessage("Рейтинга с таким id " + 8 + " нет");
     }
 }

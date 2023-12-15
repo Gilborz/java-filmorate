@@ -73,7 +73,8 @@ class FilmDbStorageTest {
         Film handlerFilm = new Film(3, "Forest", "Skazka", 160, LocalDate.of(1998, 10, 10), new Motion(1, "PG"));
 
         Assertions.assertThatExceptionOfType(SQlDataException.class)
-                .isThrownBy(() -> {filmDbStorage.updateFilm(handlerFilm);
+                .isThrownBy(() -> {
+                    filmDbStorage.updateFilm(handlerFilm);
                 }).withMessage("Фильм с таким id " + handlerFilm.getId() + " не найден");
     }
 
@@ -90,7 +91,8 @@ class FilmDbStorageTest {
                 .usingRecursiveComparison().isEqualTo(film);
 
         Assertions.assertThatExceptionOfType(ValidationException.class)
-                .isThrownBy(() -> {filmDbStorage.getFilmById(2);
+                .isThrownBy(() -> {
+                    filmDbStorage.getFilmById(2);
                 }).withMessage("Фильм не найден, id равен " + 2);
     }
 
@@ -111,7 +113,8 @@ class FilmDbStorageTest {
                 .usingRecursiveFieldByFieldElementComparator().isEqualTo(new ArrayList<>(List.of(film)));
 
         Assertions.assertThatExceptionOfType(SQlDataException.class)
-                .isThrownBy(() -> {filmDbStorage.addLike(1, 3);
+                .isThrownBy(() -> {
+                    filmDbStorage.addLike(1, 3);
                 }).withMessage("Фильм или пользователь не найдены");
     }
 
@@ -142,7 +145,8 @@ class FilmDbStorageTest {
                 .usingRecursiveFieldByFieldElementComparator().isEqualTo(new ArrayList<>(List.of(film1)));
 
         Assertions.assertThatExceptionOfType(ValidationException.class)
-                .isThrownBy(() -> {filmDbStorage.deleteLike(1, 5);
+                .isThrownBy(() -> {
+                    filmDbStorage.deleteLike(1, 5);
                 }).withMessage("Фильм или пользователь не найдены");
     }
 
