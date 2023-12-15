@@ -12,10 +12,10 @@ import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.model.Genre;
 import ru.yandex.practicum.filmorate.model.Motion;
-
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Component
@@ -48,6 +48,7 @@ public class FilmDbStorage implements FilmStorage {
         }
 
         saveGenre(film.getGenres(), film.getId());
+        film.setGenres(getListGenres(film.getId()));
 
         log.info("Фильм добавлен, id равно {}", film.getId());
         return film;
@@ -55,7 +56,8 @@ public class FilmDbStorage implements FilmStorage {
 
     @Override
     public Film updateFilm(Film film) throws SQlDataException {
-        String query = "UPDATE film SET name = ?, description = ?, duration = ?, release_date = ?, mpa = ? WHERE film_id = ?";
+        String query = "UPDATE film SET name = ?, description = ?, duration = ?, release_date = ?, mpa = ?\n" +
+                "WHERE film_id = ?";
 
         int rowNum = jdbcTemplate.update(query,
                 film.getName(),
@@ -77,6 +79,7 @@ public class FilmDbStorage implements FilmStorage {
             film.setGenres(new ArrayList<>());
         } else {
             saveGenre(film.getGenres(), film.getId());
+            film.setGenres(getListGenres(film.getId()));
         }
 
         log.info("Фильм обновлён, id равен {}", film.getId());
@@ -152,8 +155,7 @@ public class FilmDbStorage implements FilmStorage {
     }
 
     private void saveFilm(Film film) {
-        String query = "INSERT INTO film (name, description, duration, release_date, mpa) " +
-                "VALUES (?, ?, ?, ?, ?)";
+        String query = "INSERT INTO film (name, description, duration, release_date, mpa) VALUES (?, ?, ?, ?, ?)";
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
 
@@ -171,8 +173,11 @@ public class FilmDbStorage implements FilmStorage {
     }
 
     private void saveGenre(List<Genre> genres, Integer idFilm) {
+        Set<Genre> set = new HashSet<>(genres);
+        List<Genre> setGenre = new ArrayList<>(set);
+        Collections.sort(setGenre, (g1, g2) -> g1.getId() - g2.getId());
         if (genres.size() > 0) {
-            for (Genre genre : genres) {
+            for (Genre genre : setGenre) {
                 String query = "INSERT INTO film_genre_id (film_id, genre_id) VALUES (?, ?)";
                 jdbcTemplate.update(query, idFilm, genre.getId());
             }
@@ -180,14 +185,16 @@ public class FilmDbStorage implements FilmStorage {
     }
 
     private List<Film> getListFilms() {
-        String query = "SELECT film_id, name, description, duration, release_date, mpa, motion " +
+        String query = "SELECT film_id, name, description, duration, release_date, mpa, motion\n" +
                 "FROM film f JOIN mpa m ON f.mpa = m.id";
 
         return new ArrayList<>(jdbcTemplate.query(query, filmRowMapper()));
     }
 
     private List<Genre> getListGenres(Integer id) {
-        String query = "SELECT genre_id, genre FROM film_genre_id fgi JOIN genre g ON fgi.genre_id = g.id WHERE film_id = ?";
+        String query = "SELECT genre_id, genre\n" +
+                "FROM film_genre_id fgi\n" +
+                "JOIN genre g ON fgi.genre_id = g.id WHERE film_id = ?";
 
         return jdbcTemplate.query(query, genreRowMapper(), id);
     }

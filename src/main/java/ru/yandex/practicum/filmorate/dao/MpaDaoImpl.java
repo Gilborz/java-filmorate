@@ -33,7 +33,7 @@ public class MpaDaoImpl implements MpaDao {
     }
 
     @Override
-    public Motion getMpaById(Integer id) throws ValidationException {
+    public Motion getMpaById(Integer id) throws SQlDataException {
         String query = "SELECT * FROM mpa WHERE id = ?";
 
         try{
