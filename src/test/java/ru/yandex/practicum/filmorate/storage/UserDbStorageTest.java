@@ -30,7 +30,7 @@ class UserDbStorageTest {
     @DirtiesContext
     @Test
     public void testGetAllUsersFromBd() {
-        User user = new User (1, "Moon", "Ivan", "@mail", LocalDate.of(2022, 12, 12));
+        User user = new User(1, "Moon", "Ivan", "@mail", LocalDate.of(2022, 12, 12));
         List<User> addUsers = new ArrayList<>();
         addUsers.add(user);
 
@@ -47,7 +47,7 @@ class UserDbStorageTest {
     @DirtiesContext
     @Test
     public void testAddUserInBd() throws ValidationException {
-        User user = new User (1, "Moon", "Ivan", "@mail", LocalDate.of(2022, 12, 12));
+        User user = new User(1, "Moon", "Ivan", "@mail", LocalDate.of(2022, 12, 12));
         userDbStorage.addUser(user);
 
         User checkUser = userDbStorage.getUserById(1);
@@ -60,7 +60,7 @@ class UserDbStorageTest {
     @DirtiesContext
     @Test
     public void testUpdateUserInBd() throws ValidationException {
-        User user = new User (1, "Moon", "Ivan", "@mail", LocalDate.of(2022, 12, 12));
+        User user = new User(1, "Moon", "Ivan", "@mail", LocalDate.of(2022, 12, 12));
         userDbStorage.addUser(user);
 
         User newUser = new User(1, "Happy", "Ivan", "@yandex", LocalDate.of(2022, 12,12));
@@ -82,7 +82,7 @@ class UserDbStorageTest {
     @DirtiesContext
     @Test
     public void testGetUserById() throws ValidationException {
-        User user = new User (1, "Moon", "Ivan", "@mail", LocalDate.of(2022, 12, 12));
+        User user = new User(1, "Moon", "Ivan", "@mail", LocalDate.of(2022, 12, 12));
         userDbStorage.addUser(user);
 
         User checkUser = userDbStorage.getUserById(1);
@@ -99,7 +99,7 @@ class UserDbStorageTest {
     @DirtiesContext
     @Test
     public void testAddFriendsById() {
-        User user = new User (1, "Moon", "Ivan", "@mail", LocalDate.of(2022, 12, 12));
+        User user = new User(1, "Moon", "Ivan", "@mail", LocalDate.of(2022, 12, 12));
         User user1 = new User(2, "Treant", "Fedia", "@gmail", LocalDate.of(2022, 12,12));
         userDbStorage.addUser(user);
         userDbStorage.addUser(user1);
@@ -120,7 +120,7 @@ class UserDbStorageTest {
     @DirtiesContext
     @Test
     public void testRemoveFriendsById() throws ValidationException {
-        User user = new User (1, "Moon", "Ivan", "@mail", LocalDate.of(2022, 12, 12));
+        User user = new User(1, "Moon", "Ivan", "@mail", LocalDate.of(2022, 12, 12));
         User user1 = new User(2, "Treant", "Fedia", "@gmail", LocalDate.of(2022, 12,12));
         userDbStorage.addUser(user);
         userDbStorage.addUser(user1);
@@ -140,7 +140,7 @@ class UserDbStorageTest {
     @DirtiesContext
     @Test
     void testGetAllFriendsByUser() {
-        User user = new User (1, "Moon", "Ivan", "@mail", LocalDate.of(2022, 12, 12));
+        User user = new User(1, "Moon", "Ivan", "@mail", LocalDate.of(2022, 12, 12));
         User user1 = new User(2, "Treant", "Fedia", "@gmail", LocalDate.of(2022, 12,12));
         userDbStorage.addUser(user);
         userDbStorage.addUser(user1);
@@ -156,7 +156,7 @@ class UserDbStorageTest {
     @DirtiesContext
     @Test
     public void testGetCommonFriendsByUsers() {
-        User user = new User (1, "Moon", "Ivan", "@mail", LocalDate.of(2022, 12, 12));
+        User user = new User(1, "Moon", "Ivan", "@mail", LocalDate.of(2022, 12, 12));
         User user1 = new User(2, "Treant", "Fedia", "@gmail", LocalDate.of(2022, 12,12));
         User user2 = new User(3, "Treant", "Fedia", "@gmail", LocalDate.of(2022, 12,12));
         userDbStorage.addUser(user);

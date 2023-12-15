@@ -101,7 +101,7 @@ class FilmDbStorageTest {
     public void testAddLikeToFilm() {
         UserDbStorage userDbStorage = new UserDbStorage(jdbcTemplate);
         Film film = new Film(1, "Babai", "Skazka", 120, LocalDate.of(2000, 10, 10), new Motion(1, "G"));
-        User user = new User (1, "Moon", "Ivan", "@mail", LocalDate.of(2022, 12, 12));
+        User user = new User(1, "Moon", "Ivan", "@mail", LocalDate.of(2022, 12, 12));
         userDbStorage.addUser(user);
         filmDbStorage.addFilm(film);
 
@@ -124,7 +124,7 @@ class FilmDbStorageTest {
         UserDbStorage userDbStorage = new UserDbStorage(jdbcTemplate);
         Film film = new Film(1, "Babai", "Skazka", 120, LocalDate.of(2000, 10, 10), new Motion(1, "G"));
         Film film1 = new Film(2, "Ali", "Skazka", 200, LocalDate.of(2001, 10, 10), new Motion(1, "G"));
-        User user = new User (1, "Moon", "Ivan", "@mail", LocalDate.of(2022, 12, 12));
+        User user = new User(1, "Moon", "Ivan", "@mail", LocalDate.of(2022, 12, 12));
         User user1 = new User(2, "Treant", "Fedia", "@gmail", LocalDate.of(2022, 12,12));
         User user2 = new User(3, "Happy", "Ivan", "@yandex", LocalDate.of(2022, 12,12));
         userDbStorage.addUser(user);
@@ -156,7 +156,7 @@ class FilmDbStorageTest {
         UserDbStorage userDbStorage = new UserDbStorage(jdbcTemplate);
         Film film = new Film(1, "Babai", "Skazka", 120, LocalDate.of(2000, 10, 10), new Motion(1, "G"));
         Film film1 = new Film(2, "Ali", "Skazka", 200, LocalDate.of(2001, 10, 10), new Motion(1, "G"));
-        User user = new User (1, "Moon", "Ivan", "@mail", LocalDate.of(2022, 12, 12));
+        User user = new User(1, "Moon", "Ivan", "@mail", LocalDate.of(2022, 12, 12));
         User user1 = new User(2, "Treant", "Fedia", "@gmail", LocalDate.of(2022, 12,12));
         User user2 = new User(3, "Happy", "Ivan", "@yandex", LocalDate.of(2022, 12,12));
         userDbStorage.addUser(user);
