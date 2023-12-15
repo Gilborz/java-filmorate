@@ -9,8 +9,6 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import ru.yandex.practicum.filmorate.exception.SQlDataException;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
 
-import javax.xml.crypto.Data;
-
 @Slf4j
 @RestControllerAdvice("ru.yandex.practicum.filmorate.controller")
 public class ErrorHandler {
