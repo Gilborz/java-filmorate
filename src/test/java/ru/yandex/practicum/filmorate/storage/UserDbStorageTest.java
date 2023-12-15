@@ -75,7 +75,8 @@ class UserDbStorageTest {
         User handlerUser = new User(3, "Treant", "Fedia", "@gmail", LocalDate.of(2022, 12,12));
 
         Assertions.assertThatExceptionOfType(SQlDataException.class)
-                .isThrownBy(() -> {userDbStorage.updateUser(handlerUser);
+                .isThrownBy(() -> {
+                    userDbStorage.updateUser(handlerUser);
                 }).withMessage("Пользователь с таким id " + handlerUser.getId() + " не найден");
     }
 
@@ -92,7 +93,8 @@ class UserDbStorageTest {
                 .usingRecursiveComparison().isEqualTo(user);
 
         Assertions.assertThatExceptionOfType(ValidationException.class)
-                .isThrownBy(() -> {userDbStorage.getUserById(2);
+                .isThrownBy(() -> {
+                    userDbStorage.getUserById(2);
                 }). withMessage("Пользователь не найден");
     }
 
@@ -113,7 +115,8 @@ class UserDbStorageTest {
                 .usingRecursiveFieldByFieldElementComparator().isEqualTo(new ArrayList<>(List.of(user1)));
 
         Assertions.assertThatExceptionOfType(SQlDataException.class)
-                .isThrownBy(() -> {userDbStorage.addFriend(1, 3);
+                .isThrownBy(() -> {
+                    userDbStorage.addFriend(1, 3);
                 }).withMessage("Пользователи не найдены");
     }
 
@@ -133,7 +136,8 @@ class UserDbStorageTest {
                 .usingRecursiveFieldByFieldElementComparator().isEqualTo(new ArrayList<>());
 
         Assertions.assertThatExceptionOfType(SQlDataException.class)
-                .isThrownBy(() -> {userDbStorage.addFriend(1, 3);
+                .isThrownBy(() -> {
+                    userDbStorage.addFriend(1, 3);
                 }).withMessage("Пользователи не найдены");
     }
 
