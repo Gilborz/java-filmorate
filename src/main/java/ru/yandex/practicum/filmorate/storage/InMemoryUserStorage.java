@@ -2,6 +2,7 @@ package ru.yandex.practicum.filmorate.storage;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
+import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -48,6 +49,26 @@ public class InMemoryUserStorage implements UserStorage {
     public User getUserById(Integer id) {
         log.info("Информация о пользователе c id равным " + id + " отправлена");
         return users.get(id);
+    }
+
+    @Override
+    public void addFriend(Integer userId, Integer friendId) {
+
+    }
+
+    @Override
+    public void removeFriend(Integer userId, Integer friendsId) throws ValidationException {
+
+    }
+
+    @Override
+    public List<User> getAllFriends(Integer userId) {
+        return null;
+    }
+
+    @Override
+    public List<User> getCommonFriends(Integer firstId, Integer secondId) {
+        return null;
     }
 
     @Override

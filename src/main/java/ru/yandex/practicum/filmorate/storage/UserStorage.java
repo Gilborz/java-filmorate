@@ -17,5 +17,13 @@ public interface UserStorage {
 
     User getUserById(Integer id) throws ValidationException;
 
+    void addFriend(Integer userId, Integer friendId);
+
+    void removeFriend(Integer userId, Integer friendsId) throws ValidationException;
+
+    List<User> getAllFriends(Integer userId);
+
+    List<User> getCommonFriends(Integer firstId, Integer secondId);
+
     Map<Integer, User> getUsers();
 }

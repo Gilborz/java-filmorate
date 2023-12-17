@@ -2,11 +2,13 @@ package ru.yandex.practicum.filmorate.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
-import ru.yandex.practicum.filmorate.storage.FilmDbStorage;
+import ru.yandex.practicum.filmorate.storage.FilmStorage;
+
 import java.time.LocalDate;
 import java.util.List;
 
@@ -14,10 +16,10 @@ import java.util.List;
 @RestController
 public class FilmController {
 
-    private final FilmDbStorage filmStorage;
+    private final FilmStorage filmStorage;
 
     @Autowired
-    public FilmController(FilmDbStorage filmStorage) {
+    public FilmController(@Qualifier("filmDbStorage") FilmStorage filmStorage) {
         this.filmStorage = filmStorage;
     }
 
@@ -41,7 +43,7 @@ public class FilmController {
     }
 
     @PutMapping ("/films")
-    public Film updateFilm(@Valid @RequestBody Film film) {
+    public Film updateFilm(@Valid @RequestBody Film film) throws ValidationException {
         return filmStorage.updateFilm(film);
     }
 

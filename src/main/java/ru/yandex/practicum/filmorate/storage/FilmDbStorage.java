@@ -17,7 +17,7 @@ import java.sql.PreparedStatement;
 import java.util.*;
 
 @Slf4j
-@Component
+@Component("filmDbStorage")
 public class FilmDbStorage implements FilmStorage {
 
     private final JdbcTemplate jdbcTemplate;
@@ -104,6 +104,7 @@ public class FilmDbStorage implements FilmStorage {
         }
     }
 
+    @Override
     public void addLike(Integer filmId, Integer userId) throws DataAccessException {
         String query = "INSERT INTO likes (film_id, user_id) VALUES (?, ?)";
 
@@ -114,6 +115,7 @@ public class FilmDbStorage implements FilmStorage {
         }
     }
 
+    @Override
     public void deleteLike(Integer filmId, Integer userId) throws ValidationException {
         String query  = "DELETE FROM likes WHERE user_id = ? AND film_id = ?";
 
@@ -127,6 +129,7 @@ public class FilmDbStorage implements FilmStorage {
         }
     }
 
+    @Override
     public List<Film> getPopular(Integer count) {
         String query = "SELECT f.film_id, f.name, f.description, f.duration, f.release_date, f.mpa, m.motion\n" +
                 "FROM film f \n" +

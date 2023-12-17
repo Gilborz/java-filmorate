@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Map;
 
 @Slf4j
-@Component
+@Component("userDbStorage")
 public class UserDbStorage implements UserStorage {
 
     private final JdbcTemplate jdbcTemplate;
@@ -93,6 +93,7 @@ public class UserDbStorage implements UserStorage {
         }
     }
 
+    @Override
     public void addFriend(Integer userId, Integer friendId) {
         try {
             String query = "INSERT INTO friendship (user_id, friends_id) VALUES (?, ?)";
@@ -106,6 +107,7 @@ public class UserDbStorage implements UserStorage {
         }
     }
 
+    @Override
     public void removeFriend(Integer userId, Integer friendsId) throws ValidationException {
         String query = "DELETE FROM friendship WHERE user_id = ? AND friends_id = ?";
 
@@ -118,6 +120,7 @@ public class UserDbStorage implements UserStorage {
         }
     }
 
+    @Override
     public List<User> getAllFriends(Integer userId) {
         String query = "SELECT user_id, login, name, email, birthday FROM users u " +
                 "JOIN (SELECT friends_id FROM friendship WHERE user_id = ?) f ON u.user_id = f.friends_id";
@@ -126,6 +129,7 @@ public class UserDbStorage implements UserStorage {
         return new ArrayList<>(jdbcTemplate.query(query, userRowMapper(), userId));
     }
 
+    @Override
     public List<User> getCommonFriends(Integer firstId, Integer secondId) {
         String query = "SELECT * FROM users WHERE user_id IN " +
                 "(SELECT friends_id FROM friendship f WHERE f.user_id = ? INTERSECT " +

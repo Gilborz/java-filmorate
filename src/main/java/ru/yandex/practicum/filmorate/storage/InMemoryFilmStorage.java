@@ -1,7 +1,9 @@
 package ru.yandex.practicum.filmorate.storage;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Component;
+import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -48,5 +50,20 @@ public class InMemoryFilmStorage implements FilmStorage {
 
     public Map<Integer, Film> getFilms() {
         return films;
+    }
+
+    @Override
+    public void addLike(Integer filmId, Integer userId) throws DataAccessException {
+
+    }
+
+    @Override
+    public void deleteLike(Integer filmId, Integer userId) throws ValidationException {
+
+    }
+
+    @Override
+    public List<Film> getPopular(Integer count) {
+        return null;
     }
 }
