@@ -1,53 +1,97 @@
 package ru.yandex.practicum.filmorate.controller;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+import ru.yandex.practicum.filmorate.storage.UserStorage;
+
+import java.util.List;
 
 @Slf4j
 @RestController
 public class UserController {
 
-    private int id = 1;
-    private Map<Integer, User> users = new HashMap<>();
+    private final UserStorage userStorage;
 
-    @GetMapping (value = "/users")
-    public ArrayList<User> getUsers() {
-        return new ArrayList<>(users.values());
+    @Autowired
+    public UserController(@Qualifier("userDbStorage") UserStorage userStorage) {
+        this.userStorage = userStorage;
     }
 
-    @PostMapping (value = "/users")
+    @GetMapping ("/users")
+    public List<User> getUsers() {
+        return userStorage.getAllUsers();
+    }
+
+    @GetMapping ("/users/{id}")
+    public User getUserId(@PathVariable(required = false) Integer id) throws ValidationException {
+        validateEmpty(id);
+
+        return userStorage.getUserById(id);
+    }
+
+    @PostMapping ("/users")
     public User addUser(@Valid @RequestBody User user) throws ValidationException {
-        if (user.getName() == null) {
-            user.setName(user.getLogin());
-        }
+        validateDate(user);
 
-        validation(user);
-
-        user.setId(id++);
-        users.put(user.getId(), user);
-        log.info("Пользователь c id равным {} создан", user.getId());
-        return user;
+        return userStorage.addUser(user);
     }
 
-    @PutMapping (value = "/users")
-    public User updateUser(@Valid @RequestBody User user) throws ValidationException {
-        if (!users.containsKey(user.getId())) {
-            log.error("Пользователя с id равным " + user.getId() + " не найдено");
-            throw new ValidationException("Неверный id " + user.getId() + " пользователя");
-        }
-
-        users.replace(user.getId(), user);
-        log.info("Информация о пользователе c id равным " + user.getId() + " обновлена");
-        return user;
+    @PutMapping ("/users")
+    public User updateUser(@Valid @RequestBody User user) {
+        return userStorage.updateUser(user);
     }
 
-    public static void validation(User user) throws ValidationException {
+    @PutMapping ("/users/{id}/friends/{friendId}")
+    public void addFriend(
+            @PathVariable(required = false) Integer id,
+            @PathVariable(required = false) Integer friendId) {
+        validateEmpty(id);
+        validateEmpty(friendId);
+
+        userStorage.addFriend(id, friendId);
+    }
+
+    @DeleteMapping ("/users/{id}/friends/{friendId}")
+    public void removeFriend(
+            @PathVariable(required = false) Integer id,
+            @PathVariable(required = false) Integer friendId) throws ValidationException {
+        validateEmpty(id);
+        validateEmpty(friendId);
+
+        userStorage.removeFriend(id, friendId);
+    }
+
+    @GetMapping ("/users/{id}/friends")
+    public List<User> getAllFriends(@PathVariable(required = false) Integer id) {
+        validateEmpty(id);
+
+        return userStorage.getAllFriends(id);
+    }
+
+    @GetMapping ("/users/{id}/friends/common/{otherId}")
+    public List<User> getCommonFriends(
+            @PathVariable(required = false) Integer id,
+            @PathVariable(required = false) Integer otherId) {
+        validateEmpty(id);
+        validateEmpty(otherId);
+
+        return userStorage.getCommonFriends(id, otherId);
+    }
+
+    private void validateEmpty(Integer id) {
+        if (id == null) {
+            String msg = "Передан пустой id пользователя";
+            log.error(msg);
+            throw new NullPointerException(msg);
+        }
+    }
+
+    private void validateDate(User user) throws ValidationException {
         String[] forEquals = user.getLogin().split(" ");
 
         if (forEquals.length > 1) {
